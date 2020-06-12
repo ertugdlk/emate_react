@@ -4,17 +4,20 @@ import styled from "styled-components";
 import LoginButton from "./LoginButton";
 import Login from "../Login";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import RegisterButton from "./RegisterButton";
+import Register from "../Register";
 
 const NavHeader = styled.div`
-  display: flex;
+  display: absolute ;
   background-color: #161616;
   align-items: center;
   padding: 10px 150px;
   height: 40px;
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   left: 0;
+  z-index: 4;
 `;
 
 const NavLeft = styled.div`
@@ -34,7 +37,7 @@ const NavRight = styled.div`
 class Header extends React.Component {
   constructor() {
     super();
-    this.state = { isOpen: false };
+    this.state = { isOpen: false , isShow: false };
   }
 
   renderLoginPage() {
@@ -43,8 +46,14 @@ class Header extends React.Component {
     }
   }
 
+  renderRegisterPage() {
+    if (this.state.isShow === true) {
+      return <Register></Register>;
+    }
+  }
+
   handleClickAway = () => {
-    this.setState({ isOpen: false });
+    this.setState({ isOpen: false , isShow: false });
   };
 
   render() {
@@ -55,10 +64,12 @@ class Header extends React.Component {
             <NavLeft></NavLeft>
             <NavCenter></NavCenter>
             <NavRight>
-              <LoginButton onClick={() => this.setState({ isOpen: true })}>
+              <LoginButton onClick={() => this.setState({ isOpen: true , isShow: false})}>
                 Login
               </LoginButton>
+              <RegisterButton onClick={() => this.setState({ isShow: true , isOpen : false})}></RegisterButton>
               {this.state.isOpen ? <Login></Login> : null}
+              {this.state.isShow ? <Register></Register> : null}
             </NavRight>
           </NavHeader>
         </ClickAwayListener>

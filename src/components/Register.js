@@ -1,7 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 
 const Window = styled.div`
   position: absolute;
@@ -13,7 +12,7 @@ const Window = styled.div`
   border-radius: 12px;
   z-index: 3;
 `;
-const LoginButton = styled.button`
+const RegisterButton = styled.button`
   position: absolute;
   width: 150px;
   height: 35px;
@@ -49,7 +48,7 @@ const Label = styled.label`
   color: #fff;
 `;
 
-class Login extends React.Component {
+class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state = { email: "", password: "" };
@@ -67,16 +66,7 @@ class Login extends React.Component {
   }
 
   handleSubmit() {
-    const user = {
-      email: this.state.email,
-      password: this.state.password
-    };  
-
-    axios.post(`http://localhost:3000/users/authenticate`, { email: user.email , password:user.password })
-      .then(res => {
-        alert(res.data.message);
-        console.log(res.data.data.token);
-      })
+    alert("Bilgileriniz " + this.state.email + " " + this.state.password);
   }
 
   render() {
@@ -107,11 +97,11 @@ class Login extends React.Component {
               </Label>
             </form>
           </Modal>
-          <LoginButton onClick={() => this.handleSubmit()}> Login</LoginButton>
+           <RegisterButton onClick={() => this.handleSubmit()}> Register</RegisterButton>
         </Window>
       </>
     );
   }
 }
 
-export default Login;
+export default Register;
