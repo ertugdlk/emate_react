@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
+import Verify from "./common/Verify.js"
 
 const Window = styled.div`
   position: absolute;
@@ -52,7 +53,7 @@ const Label = styled.label`
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { email: "", password: "" };
+    this.state = { email: "", password: "" , isOpen: false };
 
     this.updateInput = this.updateInput.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
@@ -70,19 +71,25 @@ class Login extends React.Component {
     const user = {
       email: this.state.email,
       password: this.state.password
-    };  
-
+    };
     axios.post(`http://localhost:3000/users/authenticate`, { email: user.email , password:user.password })
-      .then(res => {
-        alert(res.data.message);
-        console.log(res.data.data.token);
-      })
-  }
+    .then(res => {
+      if(res.data.status === "failed") {
+        this.setState({ isOpen : true});
+      }
+      else {       
+      alert(res.data.data.token);
+      console.log(res.data.data.token);
+    } 
+    })
+}  
+
 
   render() {
     return (
       <>
         <Window>
+        {this.state.isOpen ? <Verify></Verify> : null}
           <Modal>
             <form>
               <Label>
@@ -109,6 +116,7 @@ class Login extends React.Component {
           </Modal>
           <LoginButton onClick={() => this.handleSubmit()}> Login</LoginButton>
         </Window>
+        
       </>
     );
   }
